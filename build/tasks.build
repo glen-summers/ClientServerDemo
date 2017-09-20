@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+	<UsingTask TaskName="ExecAsync" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+		<ParameterGroup>
+			<File ParameterType="System.String" Required="true" />
+			<Args ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System.Diagnostics"/>
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
+Process.Start(File, Args);
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+</Project>
