@@ -35,12 +35,12 @@ namespace Client
 			return binding;
 		}
 
-		public void Foo(string value)
+		public string Foo(string value)
 		{
 			log.Info("Foo");
 			try
 			{
-				Channel.Foo(value);
+				return Channel.Foo(value);
 			}
 			catch (FaultException<ServiceExceptionDetail> e)
 			{

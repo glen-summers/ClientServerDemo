@@ -6,6 +6,6 @@ namespace ServiceInterface
 	public interface IService
 	{
 		[OperationContract]
-		void Foo(string value);
+		string Foo(string value);
 	}
 }

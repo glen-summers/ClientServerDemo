@@ -8,8 +8,9 @@ namespace Service
 	[LogParams(typeof(Service))]
 	public class Service : IService
 	{
-		public void Foo(string value)
+		public string Foo(string value)
 		{
+			return "ret:" + value;
 		}
 	}
 }

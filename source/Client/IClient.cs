@@ -2,6 +2,6 @@
 {
 	public interface IClient
 	{
-		void Foo(string value);
+		string Foo(string value);
 	}
 }
