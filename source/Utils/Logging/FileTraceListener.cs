@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
+using System.Security.Principal;
 using System.Text;
 
 namespace Utils.Logging
@@ -259,6 +260,7 @@ namespace Utils.Logging
 			Assembly entryAssembly = Assembly.GetEntryAssembly();
 			string[] commandLineArgs = Environment.GetCommandLineArgs();
 			double precision = NativeMethods.TimePrecision;
+			WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
 
 			writer.WriteLine(HeaderFooterSeparator);
 			writer.WriteLine("Opened      : {0:dd MMM yyyy, HH:mm:ss (zzz)}", DateTime.Now);
@@ -267,6 +269,10 @@ namespace Utils.Logging
 			writer.WriteLine("ProcessId   : {0}", currentProcess.Id);
 			writer.WriteLine("ClrVersion  : {0}", Environment.Version);
 			writer.WriteLine("UserName    : {0}\\{1}", Environment.UserDomainName, Environment.UserName);
+			if (windowsIdentity != null)
+			{
+				writer.WriteLine("SID         : {0}", windowsIdentity.User);
+			}
 			if (entryAssembly != null)
 			{
 				writer.WriteLine("CodeBase    : {0}",

@@ -5,13 +5,11 @@ namespace Service
 {
 	// NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
 	// NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+	[LogParams(typeof(Service))]
 	public class Service : IService
 	{
-		private static readonly ILog log = LogManager.GetLogger(typeof(Service));
-
-		public void Foo()
+		public void Foo(string value)
 		{
-			log.Info("Foo");
 		}
 	}
 }

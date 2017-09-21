@@ -21,7 +21,6 @@ namespace Client
 //			catch ...
 		}
 
-
 		private static Binding GetBinding()
 		{
 			var binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly)
@@ -41,7 +40,7 @@ namespace Client
 			log.Info("Foo");
 			try
 			{
-				Channel.Foo();
+				Channel.Foo(value);
 			}
 			catch (FaultException<ServiceExceptionDetail> e)
 			{

@@ -9,7 +9,7 @@ namespace ClientIntegrationTest
 		[Test]
 		public void Foo()
 		{
-			var client = ClientFactory.Create();
+			IClient client = ClientFactory.Create();
 			client.Foo("Hello");
 		}
 	}

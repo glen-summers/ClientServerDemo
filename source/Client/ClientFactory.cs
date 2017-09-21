@@ -2,7 +2,7 @@
 {
 	public static class ClientFactory
 	{
-		private const string Url = "http://localhost:50124/Service.svc";
+		private const string Url = "http://localhost:50668/Service.svc";
 
 		public static IClient Create()
 		{
