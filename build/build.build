@@ -2,12 +2,16 @@
 	<Import Project="tasks.build"/>
 
 	<PropertyGroup>
-		<!-- match nuget package on test projects-->
+		<!-- match nuget packages on test projects-->
 		<NUnitRunnerVersion>3.7.0</NUnitRunnerVersion>
 		<NUnitConsole>nunit3-console.exe</NUnitConsole>
+		<OpenCoverVersion>4.6.519</OpenCoverVersion>
+		<ReportGeneratorVersion>3.0.0</ReportGeneratorVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<Configuration>Release</Configuration>
+		<BuildInParallel>true</BuildInParallel>
 		<Root>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..'))</Root>
 		<Out>$(Root)\out</Out>
 		<Temp>$(Out)\temp</Temp>
@@ -17,19 +21,18 @@
 		<NugetPackages>$(UserProfile)\.nuget\packages</NugetPackages>
 		<IisExpress>"$(MSBuildProgramFiles32)\IIS Express\iisexpress.exe"</IisExpress>
 		<NUnitConsole>$(NugetPackages)\NUnit.ConsoleRunner\$(NUnitRunnerVersion)\tools\$(NUnitConsole)</NUnitConsole>
+		<OpenCoverConsole>$(NugetPackages)\OpenCover\$(OpenCoverVersion)\tools\OpenCover.Console.exe</OpenCoverConsole>
+		<ReportGenerator>$(NugetPackages)\ReportGenerator\$(ReportGeneratorVersion)\tools\ReportGenerator.exe</ReportGenerator>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<MajorVersion>1</MajorVersion>
 		<MinorVersion>0</MinorVersion>
 		<FileBuildNumber>0</FileBuildNumber>
-
 		<Solution>Main.sln</Solution>
-		<Configuration>Release</Configuration>
-		<BuildInParallel>true</BuildInParallel>
-
 		<ServicePath>$(Source)\Service</ServicePath>
 		<ServicePort>50668</ServicePort> <!-- match value in Service.Properties.Web.Project Url-->
+		<NUnitProject>UnitTest.nunit</NUnitProject>
 	</PropertyGroup>
 
 	<Target Name="MakeTempDir">
@@ -68,9 +71,21 @@
 		<MSBuild Projects="$(Source)\$(Solution)" Properties="@(Properties)" BuildInParallel="$(BuildInParallel)"/>
 	</Target>
 
-	<Target Name="UnitTest" DependsOnTargets="MakeTempDir">
-		<Copy SourceFiles="$(Source)\UnitTest.nunit" DestinationFolder="$(OutputPath)"/>
-		<Exec Command="$(NUnitConsole) $(OutputPath)\UnitTest.nunit /config=$(Configuration) /out=$(Temp)\UnitTestResults.xml"/>
+	<Target Name="CopyNunit">
+		<Copy SourceFiles="$(Source)\$(NUnitProject)" DestinationFolder="$(OutputPath)"/>
+	</Target>
+
+	<Target Name="UnitTest" DependsOnTargets="MakeTempDir;CopyNunit">
+		<Exec Command="$(NUnitConsole) $(OutputPath)\$(NUnitProject) /config=$(Configuration) /out=$(Temp)\UnitTestResults.xml"/>
+	</Target>
+
+	<Target Name="OpenCover" DependsOnTargets="MakeTempDir;CopyNunit">
+		<Exec Command='$(OpenCoverConsole) -register:user -target:$(NUnitConsole) -targetargs:"$(OutputPath)\$(NUnitProject) /config=$(Configuration) /out=$(Temp)TestResults.xml" -output:$(Temp)Coverage.xml -excludebyattribute:*.GeneratedCode*'/>
+	</Target>
+
+	<Target Name="CoverageReport">
+		<Exec Command='$(ReportGenerator) -reports:$(Temp)Coverage.xml -targetdir:$(Temp)CoverageReport -verbosity:Error'/>
+		<Exec Command='$(Temp)CoverageReport\index.htm'/>
 	</Target>
 
 	<Target Name="IntegrationTest" DependsOnTargets="MakeTempDir">
@@ -78,17 +93,19 @@
 		<Exec Command="$(NUnitConsole) $(OutputPath)\IntegrationTest.nunit /config=$(Configuration) /out=$(Temp)\IntegrationTestResults.xml"/>
 	</Target>
 
-	<Target Name='StopIisExpress'>
+	<Target Name='Stop'>
 		<Exec Command='taskkill.exe /im iisexpress.exe /f' IgnoreExitCode='true' ContinueOnError='true'/>
 	</Target>
 
-	<Target Name='StartIisExpress'>
+	<Target Name='Start'>
 		<ExecAsync File="$(IisExpress)" Args='/path:$(ServicePath) /port:$(ServicePort) /systray:true'/>
 	</Target>
 
 	<Target Name="Build" DependsOnTargets="Compile;UnitTest"/>
 
-	<Target Name="Full" DependsOnTargets="Compile;UnitTest;StartIisExpress;IntegrationTest"/>
+	<Target Name="Coverage" DependsOnTargets="Compile;OpenCover;CoverageReport"/>
+
+	<Target Name="Full" DependsOnTargets="Compile;UnitTest;Start;IntegrationTest"/>
 
 	<Target Name="CiBuild" DependsOnTargets="Clean;Full"/>
 
