@@ -2,6 +2,24 @@
 	<Import Project="tasks.build"/>
 
 	<PropertyGroup>
+		<!-- match nuget package on test projects-->
+		<NUnitRunnerVersion>3.7.0</NUnitRunnerVersion>
+		<NUnitConsole>nunit3-console.exe</NUnitConsole>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Root>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..'))</Root>
+		<Out>$(Root)\out</Out>
+		<Temp>$(Out)\temp</Temp>
+		<Source>$(Root)\Source</Source>
+		<OutputPath>$(Out)\$(Configuration)</OutputPath>
+
+		<NugetPackages>$(UserProfile)\.nuget\packages</NugetPackages>
+		<IisExpress>"$(MSBuildProgramFiles32)\IIS Express\iisexpress.exe"</IisExpress>
+		<NUnitConsole>$(NugetPackages)\NUnit.ConsoleRunner\$(NUnitRunnerVersion)\tools\$(NUnitConsole)</NUnitConsole>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<MajorVersion>1</MajorVersion>
 		<MinorVersion>0</MinorVersion>
 		<FileBuildNumber>0</FileBuildNumber>
@@ -10,15 +28,8 @@
 		<Configuration>Release</Configuration>
 		<BuildInParallel>true</BuildInParallel>
 
-		<Root>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..'))</Root>
-		<Out>$(Root)\out</Out>
-		<Temp>$(Out)\temp</Temp>
-
-		<CSharp>$(Root)\Source</CSharp>
-		<OutputPath>$(Out)\$(Configuration)</OutputPath>
-
-		<IisExpress>c:\Program Files (x86)\IIS Express\iisexpress.exe</IisExpress>
-		<NUnitConsole>$(CSharp)\packages\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe</NUnitConsole>
+		<ServicePath>$(Source)\Service</ServicePath>
+		<ServicePort>50668</ServicePort> <!-- match value in Service.Properties.Web.Project Url-->
 	</PropertyGroup>
 
 	<Target Name="MakeTempDir">
@@ -28,10 +39,10 @@
 	<Target Name="Clean">
 		<ItemGroup>
 			<FileToDelete Include="$(Out)/**/*"/>
-			<FileToDelete Include="$(CSharp)/**/bin/**/*" Exclude="**/bin/**/*.vshost.exe"/>
-			<FileToDelete Include="$(CSharp)/**/obj/**/*"/>
-			<FileToDelete Include="$(CSharp)/**/Debug/*" Exclude="**/Debug/*.vshost.exe"/>
-			<FileToDelete Include="$(CSharp)/**/Release/*" Exclude="**/Release/*.vshost.exe"/>
+			<FileToDelete Include="$(Source)/**/bin/**/*" Exclude="**/bin/**/*.vshost.exe"/>
+			<FileToDelete Include="$(Source)/**/obj/**/*"/>
+			<FileToDelete Include="$(Source)/**/Debug/*" Exclude="**/Debug/*.vshost.exe"/>
+			<FileToDelete Include="$(Source)/**/Release/*" Exclude="**/Release/*.vshost.exe"/>
 		</ItemGroup>
 
 		<Delete Files="@(FileToDelete)"/>
@@ -42,7 +53,11 @@
 		<RemoveDir Directories="@(DirectoriesToRemove)"/>
 	</Target>
 
-	<Target Name="Compile">
+	<Target Name="Restore">
+		<MSBuild Projects="$(Source)\$(Solution)" Targets="restore"/>
+	</Target>
+
+	<Target Name="Compile" DependsOnTargets="Restore">
 		<ItemGroup>
 			<Properties Remove="@(Properties)"/>
 			<Properties Include="Configuration=$(Configuration)"/>
@@ -50,16 +65,16 @@
 			<Properties Include="Platform=Any CPU"/>
 			<Properties Include="@(CustomProperties)"/>
 		</ItemGroup>
-		<MSBuild Projects="$(CSharp)\$(Solution)" Properties="@(Properties)" BuildInParallel="$(BuildInParallel)"/>
+		<MSBuild Projects="$(Source)\$(Solution)" Properties="@(Properties)" BuildInParallel="$(BuildInParallel)"/>
 	</Target>
 
 	<Target Name="UnitTest" DependsOnTargets="MakeTempDir">
-		<Copy SourceFiles="$(CSharp)\UnitTest.nunit" DestinationFolder="$(OutputPath)"/>
+		<Copy SourceFiles="$(Source)\UnitTest.nunit" DestinationFolder="$(OutputPath)"/>
 		<Exec Command="$(NUnitConsole) $(OutputPath)\UnitTest.nunit /config=$(Configuration) /out=$(Temp)\UnitTestResults.xml"/>
 	</Target>
 
 	<Target Name="IntegrationTest" DependsOnTargets="MakeTempDir">
-		<Copy SourceFiles="$(CSharp)\IntegrationTest.nunit" DestinationFolder="$(OutputPath)"/>
+		<Copy SourceFiles="$(Source)\IntegrationTest.nunit" DestinationFolder="$(OutputPath)"/>
 		<Exec Command="$(NUnitConsole) $(OutputPath)\IntegrationTest.nunit /config=$(Configuration) /out=$(Temp)\IntegrationTestResults.xml"/>
 	</Target>
 
@@ -68,21 +83,13 @@
 	</Target>
 
 	<Target Name='StartIisExpress'>
-		<PropertyGroup>
-			<ServicePath>$(CSharp)\Service</ServicePath>
-			<Port>50124</Port>
-		</PropertyGroup>
-		<ExecAsync File='"$(IisExpress)"' Args='/path:$(ServicePath) /port:$(Port) /systray:true'/>
+		<ExecAsync File="$(IisExpress)" Args='/path:$(ServicePath) /port:$(ServicePort) /systray:true'/>
 	</Target>
 
 	<Target Name="Build" DependsOnTargets="Compile;UnitTest"/>
 
-	<Target Name="Full" DependsOnTargets="Compile;UnitTest;Start;IntegrationTest"/>
+	<Target Name="Full" DependsOnTargets="Compile;UnitTest;StartIisExpress;IntegrationTest"/>
 
-	<Target Name="Stop" DependsOnTargets="StopIisExpress"/>
-
-	<Target Name="Start" DependsOnTargets="StartIisExpress"/>
-
-	<Target Name="CiBuild" DependsOnTargets="Clean;Compile;UnitTest"/>
+	<Target Name="CiBuild" DependsOnTargets="Clean;Full"/>
 
 </Project>
