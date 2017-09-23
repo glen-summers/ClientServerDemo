@@ -35,6 +35,10 @@
 		<NUnitProject>UnitTest.nunit</NUnitProject>
 	</PropertyGroup>
 
+	<Target Name="BuildTasks">
+		<MSBuild Projects="$(Source)\BuildTasks\BuildTasks.csproj" Properties="Configuration=Release;OutputPath=$(OutputPath);Platform=AnyCPU"/>
+	</Target>
+
 	<Target Name="MakeTempDir">
 		<MakeDir Directories="$(Temp)"/>
 	</Target>
@@ -71,6 +75,22 @@
 		<MSBuild Projects="$(Source)\$(Solution)" Properties="@(Properties)" BuildInParallel="$(BuildInParallel)"/>
 	</Target>
 
+	<Target Name="BuildGui" DependsOnTargets="BuildTasks;MakeTempDir">
+		<ItemGroup>
+			<Assembly Remove="@(Assembly)"/>
+			<Assembly Include="$(OutputPath)\Gui.exe"/>
+			<Assembly Include="$(OutputPath)\Client.dll"/>
+			<Assembly Include="$(OutputPath)\ServiceInterface.dll"/>
+			<Assembly Include="$(OutputPath)\Utils.dll"/>
+		</ItemGroup>
+		<AssemblyBuilder OutputAssembly="$(OutputPath)\..\GuiMerged.exe" MainAssembly="$(OutputPath)\Gui.exe"
+										 target="winexe" KeyFile="$(Source)\Key.snk" EntryPoint="Program.Main"
+										 Pdbs="true" XmlSerialisers="true" Trace="true"
+										 CompilerVersion="v4.0"
+										 Assemblies="@(Assembly)"
+										 TempDir="$(Temp)"/>
+	</Target>
+
 	<Target Name="CopyNunit">
 		<Copy SourceFiles="$(Source)\$(NUnitProject)" DestinationFolder="$(OutputPath)"/>
 	</Target>
@@ -101,7 +121,7 @@
 		<ExecAsync File="$(IisExpress)" Args='/path:$(ServicePath) /port:$(ServicePort) /systray:true'/>
 	</Target>
 
-	<Target Name="Build" DependsOnTargets="Compile;UnitTest"/>
+	<Target Name="Build" DependsOnTargets="Compile;UnitTest;BuildGui"/>
 
 	<Target Name="Coverage" DependsOnTargets="Compile;OpenCover;CoverageReport"/>
 

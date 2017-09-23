@@ -13,4 +13,6 @@ Process.Start(File, Args);
 			</Code>
 		</Task>
 	</UsingTask>
+
+	<UsingTask TaskName="BuildTasks.AssemblyBuilder" AssemblyFile="$(OutputPath)\BuildTasks.dll"/>
 </Project>

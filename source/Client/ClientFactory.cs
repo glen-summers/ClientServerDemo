@@ -2,11 +2,11 @@
 {
 	public static class ClientFactory
 	{
-		private const string Url = "http://localhost:50668/Service.svc";
+		private const string Url = "http://{0}/Service.svc";
 
-		public static IClient Create()
+		public static IClient Create(string host)
 		{
-			return new ServiceClient(Url);
+			return new ServiceClient(string.Format(Url, host));
 		}
 	}
 }
