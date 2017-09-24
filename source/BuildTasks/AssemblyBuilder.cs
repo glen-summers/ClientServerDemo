@@ -65,6 +65,7 @@ using System.Reflection;";
 [assembly: AssemblyProduct(""{3}"")]
 [assembly: AssemblyCopyright(""{4}"")]
 [assembly: AssemblyVersion(""{5}"")]
+[assembly: AssemblyFileVersion(""{6}"")]";
 
 		private const string Program =
 			@"
