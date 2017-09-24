@@ -20,9 +20,6 @@ namespace BuildTasks
 		[Required]
 		public string MainAssembly { get; set; }
 
-		[Required]
-		public string EntryPoint { get; set; }
-
 		public string KeyFile { get; set; }
 
 		public string Target { get; set; }
@@ -68,7 +65,6 @@ using System.Reflection;";
 [assembly: AssemblyProduct(""{3}"")]
 [assembly: AssemblyCopyright(""{4}"")]
 [assembly: AssemblyVersion(""{5}"")]
-[assembly: AssemblyFileVersion(""{6}"")]";
 
 		private const string Program =
 			@"
@@ -157,7 +153,7 @@ public class Program
 		try
 		{{
 			Trace.WriteLine(""Main"");
-			{0}();
+			Assembly.Load(""{0}"").EntryPoint.Invoke(null, null);
 		}}
 		catch (Exception e)
 		{{
@@ -174,7 +170,7 @@ public class Program
 		try
 		{{
 			Trace.WriteLine(""Main"");
-			{0}(args);
+			Assembly.Load(""{0}"").EntryPoint.Invoke(args, null);
 		}}
 		catch (Exception e)
 		{{
@@ -249,7 +245,7 @@ public class Program
 						fileVersion.Version);
 					builder.Append(Program);
 					builder.Append(Compress ? ReadAllCompressed : ReadAll);
-					builder.AppendFormat(Args ? MainArgs : MainVoid, assemblyName.Name + "." + EntryPoint);
+					builder.AppendFormat(Args ? MainArgs : MainVoid, assemblyName.FullName);
 
 					CompilerResults cr = provider.CompileAssemblyFromSource(cp, builder.ToString());
 

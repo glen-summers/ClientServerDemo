@@ -84,11 +84,10 @@
 			<Assembly Include="$(OutputPath)\Utils.dll"/>
 		</ItemGroup>
 		<AssemblyBuilder OutputAssembly="$(OutputPath)\..\GuiMerged.exe" MainAssembly="$(OutputPath)\Gui.exe"
-										 target="winexe" KeyFile="$(Source)\Key.snk" EntryPoint="Program.Main"
+										 target="winexe" Icon="$(Source)\Gui\Gui.ico"
 										 Pdbs="true" XmlSerialisers="true" Trace="true"
-										 CompilerVersion="v4.0"
-										 Assemblies="@(Assembly)"
-										 TempDir="$(Temp)"/>
+										 KeyFile="$(Source)\key.snk"
+										 CompilerVersion="v4.0" Assemblies="@(Assembly)" TempDir="$(Temp)"/>
 	</Target>
 
 	<Target Name="CopyNunit">
