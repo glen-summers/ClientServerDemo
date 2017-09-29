@@ -9,11 +9,19 @@
 	<Window.DataContext>
 		<local:MainWindowViewModel/>
 	</Window.DataContext>
-	
-    <StackPanel>
-			<TextBox Text ="{Binding Host}"/>
-			<TextBox Text ="{Binding Context}"/>
-			<Button Content="Submit" Command="{Binding Clicked}"/>
-			<TextBox Text ="{Binding Result}" IsReadOnly="True" />
+
+	<StackPanel>
+		<TextBox Text ="{Binding Host}"/>
+		<TextBox Text ="{Binding Context}"/>
+		<Button Content="Submit" Command="{Binding SubmitCommand}"/>
+		<Button Content="Query" Command="{Binding QueryCommand}"/>
+		
+		<ContentControl Content="{Binding Result}">
+			<ContentControl.Resources>
+				<DataTemplate DataType="{x:Type local:QueryResult}">
+					<ListBox ItemsSource="{Binding Result}"></ListBox>
+				</DataTemplate>
+			</ContentControl.Resources>
+		</ContentControl>
 	</StackPanel>
 </Window>

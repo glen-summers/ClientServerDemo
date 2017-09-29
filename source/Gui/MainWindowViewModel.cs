@@ -8,14 +8,15 @@ namespace Gui
 {
 	public class MainWindowViewModel : INotifyPropertyChanged
 	{
-		private string result;
-		public ICommand Clicked => new RelayCommand(OnClicked);
+		private object result;
+		public ICommand SubmitCommand => new RelayCommand(Submit);
+		public ICommand QueryCommand => new RelayCommand(Query);
 
 		public string Host { get; set; } = "localhost:50668";
 
 		public string Context { get; set; }
 
-		public string Result
+		public object Result
 		{
 			get => result;
 			set
@@ -25,11 +26,23 @@ namespace Gui
 			}
 		}
 
-		private void OnClicked()
+		private void Submit()
 		{
 			try
 			{
 				Result = ClientFactory.Create(Host).Foo(Context);
+			}
+			catch (Exception e)
+			{
+				Result = e.ToString();
+			}
+		}
+
+		private void Query()
+		{
+			try
+			{
+				Result = new QueryResult(ClientFactory.Create(Host).Query(10));
 			}
 			catch (Exception e)
 			{

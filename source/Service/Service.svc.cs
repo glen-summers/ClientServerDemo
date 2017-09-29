@@ -1,4 +1,6 @@
-﻿using ServiceInterface;
+﻿using System.Configuration;
+using Server;
+using ServiceInterface;
 using Utils.Logging;
 
 namespace Service
@@ -8,9 +10,22 @@ namespace Service
 	[LogParams(typeof(Service))]
 	public class Service : IService
 	{
+		private static readonly IServer server = CreateServer();
+
 		public string Foo(string value)
 		{
-			return "ret:" + value;
+			return server.Foo(value);
+		}
+
+		public string[] Query(int count)
+		{
+			return server.Query(count);
+		}
+
+		private static IServer CreateServer()
+		{
+			string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;	
+			return new Server.Server(connectionString);
 		}
 	}
 }

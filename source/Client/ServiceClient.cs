@@ -47,5 +47,18 @@ namespace Client
 				throw new InvalidOperationException(e.Message, e);
 			}
 		}
+
+		public string[] Query(int count)
+		{
+			log.Info("Query");
+			try
+			{
+				return Channel.Query(count);
+			}
+			catch (FaultException<ServiceExceptionDetail> e)
+			{
+				throw new InvalidOperationException(e.Message, e);
+			}
+		}
 	}
 }

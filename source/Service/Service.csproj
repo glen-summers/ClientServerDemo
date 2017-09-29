@@ -87,6 +87,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Server\Server.csproj">
+      <Project>{EB966D00-EFDD-4055-BDEC-639DF77306A1}</Project>
+      <Name>Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceInterface\ServiceInterface.csproj">
       <Project>{D4242C4D-8229-490B-9C9F-34AB62EC7F95}</Project>
       <Name>ServiceInterface</Name>

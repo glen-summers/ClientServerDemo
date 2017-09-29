@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTasks", "BuildTasks\BuildTasks.csproj", "{F8A07616-8C91-4219-8950-D0314878E52C}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{914C9404-74A4-484E-BE26-7BDEA7D97F03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{EB966D00-EFDD-4055-BDEC-639DF77306A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +71,16 @@ Global
 		{F8A07616-8C91-4219-8950-D0314878E52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8A07616-8C91-4219-8950-D0314878E52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8A07616-8C91-4219-8950-D0314878E52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{914C9404-74A4-484E-BE26-7BDEA7D97F03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914C9404-74A4-484E-BE26-7BDEA7D97F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{914C9404-74A4-484E-BE26-7BDEA7D97F03}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{914C9404-74A4-484E-BE26-7BDEA7D97F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{914C9404-74A4-484E-BE26-7BDEA7D97F03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{914C9404-74A4-484E-BE26-7BDEA7D97F03}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EB966D00-EFDD-4055-BDEC-639DF77306A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB966D00-EFDD-4055-BDEC-639DF77306A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB966D00-EFDD-4055-BDEC-639DF77306A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB966D00-EFDD-4055-BDEC-639DF77306A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

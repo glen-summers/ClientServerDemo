@@ -7,5 +7,8 @@ namespace ServiceInterface
 	{
 		[OperationContract]
 		string Foo(string value);
+
+		[OperationContract]
+		string[] Query(int count);
 	}
 }

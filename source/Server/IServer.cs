@@ -1,8 +1,9 @@
-﻿namespace Client
+﻿namespace Server
 {
-	public interface IClient
+	public interface IServer
 	{
 		string Foo(string value);
+
 		string[] Query(int count);
 	}
 }
