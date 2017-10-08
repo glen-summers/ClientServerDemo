@@ -7,11 +7,14 @@ using Utils.Logging;
 namespace Service
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public sealed class LogParamsAttribute : Attribute, IContractBehavior
+	public sealed class LogParamsAttribute : Attribute, IContractBehavior, IErrorHandler
 	{
+		private readonly ILog log;
+
 		public LogParamsAttribute(Type type)
 		{
 			Type = type;
+			log = LogManager.GetLogger(Type);
 		}
 
 		public Type Type { get; }
@@ -23,13 +26,14 @@ namespace Service
 		public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint,
 			DispatchRuntime dispatchRuntime)
 		{
-			ILog log = LogManager.GetLogger(Type);
 			IParameterInspector parameterInspector = new ParameterLogger(log);
 
 			foreach (var operation in dispatchRuntime.Operations)
 			{
 				operation.ParameterInspectors.Add(parameterInspector);
 			}
+
+			dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(this);
 		}
 
 		public void ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint,
@@ -40,6 +44,17 @@ namespace Service
 		public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint,
 			BindingParameterCollection bindingParameters)
 		{
+		}
+
+		public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
+		{
+			
+		}
+
+		public bool HandleError(Exception error)
+		{
+			log.Error(error.Message);
+			return true;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [Demo].[Data]
+﻿CREATE TABLE [demo].[Data]
 (
 	[Id] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[DataValue] VARCHAR(256) NOT NULL

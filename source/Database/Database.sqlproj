@@ -63,5 +63,7 @@
   <ItemGroup>
     <Build Include="Data.sql" />
     <Build Include="AddSchema.sql" />
+    <Build Include="AddData.sql" />
+    <Build Include="Query.sql" />
   </ItemGroup>
 </Project>

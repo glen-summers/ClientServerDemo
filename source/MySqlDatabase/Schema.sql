@@ -1,0 +1,29 @@
+
+DROP SCHEMA IF EXISTS demo;
+
+CREATE SCHEMA IF NOT EXISTS demo DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS demo.Data;
+
+CREATE TABLE demo.Data
+(
+	`Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`DataValue` VARCHAR(255),
+
+	PRIMARY KEY (`Id`)
+);
+
+DELIMITER //
+CREATE PROCEDURE demo.AddData(IN `dataValue` VARCHAR(255), OUT `id` INT)
+BEGIN
+INSERT INTO demo.Data (`DataValue`) VALUES (`dataValue`);
+SET `id` = last_insert_id();
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE demo.Query(IN `count` INT UNSIGNED)
+BEGIN
+SELECT `Id`,`DataValue` from demo.Data ORDER BY `Id` DESC limit `count`;
+END //
+DELIMITER ;

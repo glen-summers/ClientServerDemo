@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{30F0FCE0-467F-4128-AA6E-A15B2BA0B9F9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".SolutionItems", ".SolutionItems", "{30F0FCE0-467F-4128-AA6E-A15B2BA0B9F9}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\build.build = ..\build\build.build
 		..\go.cmd = ..\go.cmd
@@ -30,6 +30,16 @@ EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{914C9404-74A4-484E-BE26-7BDEA7D97F03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{EB966D00-EFDD-4055-BDEC-639DF77306A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MySql", "MySql", "{4828ABE5-5D15-446D-B543-B9CE0C3BB921}"
+	ProjectSection(SolutionItems) = preProject
+		MySqlDatabase\db.cmd = MySqlDatabase\db.cmd
+		MySqlDatabase\Schema.sql = MySqlDatabase\Schema.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{00E82931-B91B-476C-9918-557EF6D8EE6C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlSvr", "SqlSvr", "{916CE296-0E94-4111-A24B-9933069E20D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +88,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67F6D006-4751-43D7-865F-E3F44EC54E2B} = {00E82931-B91B-476C-9918-557EF6D8EE6C}
+		{24A4AB20-4BF5-4AD6-868C-4E853F75498C} = {00E82931-B91B-476C-9918-557EF6D8EE6C}
+		{914C9404-74A4-484E-BE26-7BDEA7D97F03} = {916CE296-0E94-4111-A24B-9933069E20D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919A6C12-019D-4F0F-ABD4-A16B8B757483}

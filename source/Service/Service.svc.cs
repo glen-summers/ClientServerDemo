@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using Server;
 using ServiceInterface;
 using Utils.Logging;
@@ -10,6 +11,7 @@ namespace Service
 	[LogParams(typeof(Service))]
 	public class Service : IService
 	{
+		private static readonly ILog log = LogManager.GetLogger(typeof(Service));
 		private static readonly IServer server = CreateServer();
 
 		public string Foo(string value)
@@ -24,8 +26,17 @@ namespace Service
 
 		private static IServer CreateServer()
 		{
-			string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;	
-			return new Server.Server(connectionString);
+			try
+			{
+				var connectionStringSettingsCollection = ConfigurationManager.ConnectionStrings;
+				ConnectionStringSettings connectionStringSettings = connectionStringSettingsCollection["Sql"];
+				return new Server.Server(connectionStringSettings.ConnectionString, connectionStringSettings.ProviderName);
+			}
+			catch (Exception e)
+			{
+				log.Error(e.ToString());
+				throw;
+			}
 		}
 	}
 }
