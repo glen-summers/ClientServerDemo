@@ -79,6 +79,7 @@
     <Content Include="..\key.snk">
       <Link>key.snk</Link>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
