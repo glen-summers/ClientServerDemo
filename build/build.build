@@ -108,7 +108,8 @@
 	</Target>
 
 	<Target Name='Start'>
-		<ExecAsync File="$(IisExpress)" Args='/path:$(ServicePath) /port:$(ServicePort) /systray:true'/>
+		<!-- use a custom applicationhost.config file-->
+		<ExecAsync File="$(IisExpress)" Args='/config:$(Source)\.vs\config\applicationhost.config /site:Service /systray:true '/>
 	</Target>
 
 	<Target Name="Build" DependsOnTargets="Compile;UnitTest"/>
