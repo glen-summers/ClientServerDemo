@@ -31,7 +31,13 @@
 		<FileBuildNumber>0</FileBuildNumber>
 		<Solution>Main.sln</Solution>
 		<ServicePath>$(OutputPath)\_PublishedWebsites\Service</ServicePath>
-		<ServicePort>50668</ServicePort> <!-- match value in Service.Properties.Web.Project Url-->
+		
+		<!--  ServicePort should match value in Service.Properties.Web.Project Url @ ~\.vs\config\applicationhost.config -->
+		<ServicePort>50668</ServicePort> 
+		<!-- fiddler to observe transport content on local machine: https://stackoverflow.com/questions/3313616/iis-express-enable-external-request
+		"netsh http add urlacl url=http://*:50668/ user=everyone"
+		and set: <binding protocol="http" bindingInformation="*:50668:*" in applicationhost.config -->
+
 		<NUnitProject>UnitTest.nunit</NUnitProject>
 	</PropertyGroup>
 

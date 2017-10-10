@@ -28,7 +28,7 @@ namespace Client
 				MessageEncoding = WSMessageEncoding.Text,
 				MaxReceivedMessageSize = int.MaxValue,
 				ReaderQuotas = { MaxArrayLength = int.MaxValue },
-				UseDefaultWebProxy = false,
+				UseDefaultWebProxy = true,
 				TransferMode = TransferMode.StreamedResponse
 			};
 			binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;

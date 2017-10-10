@@ -16,6 +16,7 @@ namespace Service
 
 		public string Foo(string value)
 		{
+			log.Info("User:{0}", System.Threading.Thread.CurrentPrincipal.Identity.Name);
 			return server.Foo(value);
 		}
 
