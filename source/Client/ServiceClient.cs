@@ -13,12 +13,6 @@ namespace Client
 		public ServiceClient(string endpoint) : base(GetBinding(), new EndpointAddress(endpoint))
 		{
 			log.Info("Ctor {0}", endpoint);
-
-//			try
-//			{
-//				Channel.Connect();
-//			}
-//			catch ...
 		}
 
 		private static Binding GetBinding()
@@ -44,7 +38,13 @@ namespace Client
 			}
 			catch (FaultException<ServiceExceptionDetail> e)
 			{
-				throw new InvalidOperationException(e.Message, e);
+				log.Warning("ExceptionFault: {0} : {1}", e.GetType(), e.Message);
+				throw new ClientException(e.Message);
+			}
+			catch (Exception e)
+			{
+				log.Warning("Exception: {0} : {1}", e.GetType(), e.Message);
+				throw;
 			}
 		}
 
@@ -57,7 +57,51 @@ namespace Client
 			}
 			catch (FaultException<ServiceExceptionDetail> e)
 			{
-				throw new InvalidOperationException(e.Message, e);
+				log.Warning("ExceptionFault: {0} : {1}", e.GetType(), e.Message);
+				throw new ClientException(e.Message);
+			}
+			catch (Exception e)
+			{
+				log.Warning("Exception: {0} : {1}", e.GetType(), e.Message);
+				throw;
+			}
+		}
+
+		public void ThrowFault(string message)
+		{
+			log.Info("ThrowFault");
+			try
+			{
+				Channel.ThrowFault(message);
+			}
+			catch (FaultException<ServiceExceptionDetail> e)
+			{
+				log.Warning("ExceptionFault: {0} : {1}", e.GetType(), e.Message);
+				throw new ClientException(e.Message);
+			}
+			catch (Exception e)
+			{
+				log.Warning("Exception: {0} : {1}", e.GetType(), e.Message);
+				throw;
+			}
+		}
+
+		public void ThrowException(string message)
+		{
+			log.Info("ThrowException");
+			try
+			{
+				Channel.ThrowException(message);
+			}
+			catch (FaultException<ServiceExceptionDetail> e)
+			{
+				log.Warning("ExceptionFault: {0} : {1}", e.GetType(), e.Message);
+				throw new ClientException(e.Message);
+			}
+			catch (Exception e)
+			{
+				log.Warning("Exception: {0} : {1}", e.GetType(), e.Message);
+				throw;
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.ServiceModel;
 using Server;
 using ServiceInterface;
 using Utils.Logging;
@@ -23,6 +24,16 @@ namespace Service
 		public string[] Query(int count)
 		{
 			return server.Query(count);
+		}
+
+		public void ThrowFault(string message)
+		{
+			throw new FaultException<ServiceExceptionDetail>(new ServiceExceptionDetail(), message);
+		}
+
+		public void ThrowException(string message)
+		{
+			throw new InvalidOperationException("Error!");
 		}
 
 		private static IServer CreateServer()
