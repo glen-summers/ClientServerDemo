@@ -20,6 +20,7 @@
 
 		<NugetPackages>$(UserProfile)\.nuget\packages</NugetPackages>
 		<IisExpress>"$(MSBuildProgramFiles32)\IIS Express\iisexpress.exe"</IisExpress>
+		<AppCmd>"$(MSBuildProgramFiles32)\IIS Express\appcmd.exe"</AppCmd>
 		<NUnitConsole>$(NugetPackages)\NUnit.ConsoleRunner\$(NUnitRunnerVersion)\tools\$(NUnitConsole)</NUnitConsole>
 		<OpenCoverConsole>$(NugetPackages)\OpenCover\$(OpenCoverVersion)\tools\OpenCover.Console.exe</OpenCoverConsole>
 		<ReportGenerator>$(NugetPackages)\ReportGenerator\$(ReportGeneratorVersion)\tools\ReportGenerator.exe</ReportGenerator>
@@ -30,7 +31,8 @@
 		<MinorVersion>0</MinorVersion>
 		<FileBuildNumber>0</FileBuildNumber>
 		<Solution>Main.sln</Solution>
-		<ServicePath>$(OutputPath)\_PublishedWebsites\Service</ServicePath>
+		<ServiceName>Service</ServiceName>
+		<ServicePath>$(OutputPath)\_PublishedWebsites\$(ServiceName)</ServicePath>
 		
 		<!--  ServicePort should match value in Service.csproj IISUrl -->
 		<ServicePort>50668</ServicePort> 
@@ -108,15 +110,21 @@
 	</Target>
 
 	<Target Name='Start'>
-		<!-- use a custom applicationhost.config file-->
-		<ExecAsync File="$(IisExpress)" Args='/config:$(Source)\.vs\config\applicationhost.config /site:Service /systray:true '/>
+		<!-- this mimics what visual studio does to fire up iis and allows independent operation-->
+		<Copy SourceFiles="$(UserProfile)\Documents\IISExpress\config\applicationhost.config" DestinationFolder="$(Temp)"/>
+		<Exec Command="$(AppCmd) /apphostconfig:$(Temp)\applicationhost.config add site /name:$(ServiceName) /physicalPath:$(ServicePath) /bindings:http://localhost:$(ServicePort)"/>
+		<Exec Command="$(AppCmd) /apphostconfig:$(Temp)\applicationhost.config set app /app.name $(ServiceName)/ /applicationPool:Clr4IntegratedAppPool"/>
+		<Exec Command='$(AppCmd) /apphostconfig:$(Temp)\applicationhost.config set config "$(ServiceName)" /section:anonymousAuthentication /enabled:false /commit:apphost'/>
+		<Exec Command='$(AppCmd) /apphostconfig:$(Temp)\applicationhost.config set config "$(ServiceName)" /section:windowsAuthentication /enabled:true /commit:apphost'/>
+
+		<ExecAsync File="$(IisExpress)" Args='/config:$(Temp)\applicationhost.config /site:$(ServiceName) /systray:true'/>
 	</Target>
 
 	<Target Name="Build" DependsOnTargets="Compile;UnitTest"/>
 
 	<Target Name="Coverage" DependsOnTargets="Compile;OpenCover;CoverageReport"/>
 
-	<Target Name="Full" DependsOnTargets="Compile;UnitTest;Start;IntegrationTest"/>
+	<Target Name="Full" DependsOnTargets="Compile;UnitTest;Start;IntegrationTest;Stop"/>
 
 	<Target Name="CiBuild" DependsOnTargets="Clean;Full"/>
 
