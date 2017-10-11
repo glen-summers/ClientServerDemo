@@ -8,6 +8,7 @@ namespace ClientIntegrationTest
 	[TestFixture]
 	public class BasicTests
 	{
+		// should match value in Service.csproj IISUrl
 		private string host = "localhost:50668";
 
 		[Test]

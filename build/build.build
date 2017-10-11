@@ -32,7 +32,7 @@
 		<Solution>Main.sln</Solution>
 		<ServicePath>$(OutputPath)\_PublishedWebsites\Service</ServicePath>
 		
-		<!--  ServicePort should match value in Service.Properties.Web.Project Url @ ~\.vs\config\applicationhost.config -->
+		<!--  ServicePort should match value in Service.csproj IISUrl -->
 		<ServicePort>50668</ServicePort> 
 		<!-- fiddler to observe transport content on local machine: https://stackoverflow.com/questions/3313616/iis-express-enable-external-request
 		"netsh http add urlacl url=http://*:50668/ user=everyone"

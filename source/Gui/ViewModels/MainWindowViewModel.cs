@@ -16,6 +16,7 @@ namespace Gui.ViewModels
 		public ICommand FaultCommand => new RelayCommand(Fault);
 		public ICommand ExceptCommand => new RelayCommand(Except);
 
+		// should match value in Service.csproj IISUrl
 		public string Host { get; set; } = "localhost:50668";
 
 		public string Context { get; set; } = "<Context>";
