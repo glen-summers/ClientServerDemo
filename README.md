@@ -19,7 +19,7 @@ Includes:
 
 ## Prerequisites
 Visual Studio 2017 including .net 4.7, SqlServer, iisexpress
-Optional: MqSql Server and .net connector
+Optional: MySql Server and .net connector
 
 ## Build 
 using go.cmd in project root
