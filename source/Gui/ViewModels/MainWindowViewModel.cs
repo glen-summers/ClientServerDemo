@@ -18,8 +18,7 @@ namespace Gui.ViewModels
 
 		public string Host { get; set; } = "localhost:50668";
 
-		public string Context { get; set; }
-
+		public string Context { get; set; } = "<Context>";
 
 		public object Result
 		{
