@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.ServiceModel;
 using Server;
+using Service.Utils;
 using ServiceInterface;
 using Utils.Logging;
 
@@ -15,25 +16,29 @@ namespace Service
 		private static readonly ILog log = LogManager.GetLogger(typeof(Service));
 		private static readonly IServer server = CreateServer();
 
+		[Method]
 		public string Foo(string value)
 		{
 			log.Info("User:{0}", System.Threading.Thread.CurrentPrincipal.Identity.Name);
 			return server.Foo(value);
 		}
 
+		[Method]
 		public string[] Query(int count)
 		{
 			return server.Query(count);
 		}
 
+		[Method]
 		public void ThrowFault(string message)
 		{
-			throw new FaultException<ServiceExceptionDetail>(new ServiceExceptionDetail(), message);
+			server.ThrowFault(message);
 		}
 
+		[Method]
 		public void ThrowException(string message)
 		{
-			throw new InvalidOperationException("Error!");
+			server.ThrowException(message);
 		}
 
 		private static IServer CreateServer()

@@ -60,5 +60,15 @@ namespace Server
 				}
 			}
 		}
+
+		public void ThrowFault(string message)
+		{
+			throw new ServerException(message);
+		}
+
+		public void ThrowException(string message)
+		{
+			throw new InvalidOperationException(message);
+		}
 	}
 }

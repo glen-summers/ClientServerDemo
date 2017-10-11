@@ -9,7 +9,9 @@ Includes:
 * Single client executable deployment with Fody/Costura
 * Database agnostic middle-tier
 * Simple low dependency logging
-* WCF inspectors to log parameters and exceptions
+* WCF IParameterInspector to log parameters 
+* WCF IErrorHandler to log exceptions
+* WCF IOperationInvoker to translate excptions to service faults
 * SqlServer and MySql data implementations
 * Unit Tests
 * Integration Tests

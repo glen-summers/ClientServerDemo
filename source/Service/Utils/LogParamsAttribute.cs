@@ -4,7 +4,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using Utils.Logging;
 
-namespace Service
+namespace Service.Utils
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class LogParamsAttribute : Attribute, IContractBehavior, IErrorHandler

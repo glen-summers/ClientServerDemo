@@ -4,7 +4,7 @@ using System.Linq;
 using System.ServiceModel.Dispatcher;
 using Utils.Logging;
 
-namespace Service
+namespace Service.Utils
 {
 	internal class ParameterLogger : IParameterInspector
 	{
