@@ -1,0 +1,39 @@
+﻿<Window x:Class="Gui.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:models="clr-namespace:Gui.Models"
+        xmlns:viewModels="clr-namespace:Gui.ViewModels"
+        xmlns:views="clr-namespace:Gui.Views"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+	<Window.DataContext>
+		<viewModels:MainWindowViewModel/>
+	</Window.DataContext>
+
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<StackPanel>
+			<TextBox Text ="{Binding Host}"/>
+			<TextBox Text ="{Binding Context}"/>
+			<Button Content="Submit" Command="{Binding SubmitCommand}"/>
+			<Button Content="Query" Command="{Binding QueryCommand}"/>
+			<Button Content="Fault" Command="{Binding FaultCommand}"/>
+			<Button Content="Except" Command="{Binding ExceptCommand}"/>
+
+			<ContentControl Content="{Binding Result}">
+				<ContentControl.Resources>
+					<DataTemplate DataType="{x:Type models:QueryResult}">
+						<ListBox ItemsSource="{Binding Result}"/>
+					</DataTemplate>
+
+					<DataTemplate DataType="{x:Type system:Exception}">
+						<views:ExceptionView/>
+					</DataTemplate>
+
+				</ContentControl.Resources>
+			</ContentControl>
+		</StackPanel>
+	</ScrollViewer>
+</Window>

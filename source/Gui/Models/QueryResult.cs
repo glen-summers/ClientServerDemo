@@ -1,4 +1,4 @@
-namespace Gui
+namespace Gui.Models
 {
 	internal class QueryResult
 	{

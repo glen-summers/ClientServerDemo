@@ -1,0 +1,40 @@
+<UserControl x:Class="Gui.Views.ExceptionView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:gui="clr-namespace:Gui"
+	xmlns:utils="clr-namespace:Gui.Utils">
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<TextBlock Grid.Row="0" Margin="10"
+								 Foreground="RoyalBlue" FontFamily="Microsoft Sans Serif" FontWeight="Bold" FontSize="10pt"
+								 Text="Service Exception"/>
+
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Image Grid.Column="0" Source="../Images/alert.png" Width="64" Height="64" Margin="6"/>
+			<TextBlock Grid.Column="1" Text="{Binding Message}" FontWeight="Bold" TextWrapping="Wrap" Margin="6"/>
+		</Grid>
+
+		<Expander Grid.Row="2">
+			<Expander.Header>
+				<TextBlock Foreground="RoyalBlue" FontFamily="Microsoft Sans Serif" FontWeight="Bold" FontSize="10pt" Text="Details"/>
+			</Expander.Header>
+
+			<RichTextBox IsReadOnly="True" IsReadOnlyCaretVisible="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+				<i:Interaction.Behaviors>
+					<utils:RichTextBinder Document="{Binding Converter={utils:ExceptionConverter}}"/>
+				</i:Interaction.Behaviors>
+			</RichTextBox>
+		</Expander>
+	</Grid>
+</UserControl>

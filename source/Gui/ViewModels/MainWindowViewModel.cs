@@ -3,18 +3,23 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Client;
+using Gui.Models;
+using Gui.Utils;
 
-namespace Gui
+namespace Gui.ViewModels
 {
 	public class MainWindowViewModel : INotifyPropertyChanged
 	{
 		private object result;
 		public ICommand SubmitCommand => new RelayCommand(Submit);
 		public ICommand QueryCommand => new RelayCommand(Query);
+		public ICommand FaultCommand => new RelayCommand(Fault);
+		public ICommand ExceptCommand => new RelayCommand(Except);
 
 		public string Host { get; set; } = "localhost:50668";
 
 		public string Context { get; set; }
+
 
 		public object Result
 		{
@@ -47,6 +52,32 @@ namespace Gui
 			catch (Exception e)
 			{
 				Result = e.ToString();
+			}
+		}
+
+		private void Except()
+		{
+			try
+			{
+				ClientFactory.Create(Host).ThrowException("Except");
+				Result = "Unexpected";
+			}
+			catch (Exception e)
+			{
+				Result = e;
+			}
+		}
+
+		private void Fault()
+		{
+			try
+			{
+				ClientFactory.Create(Host).ThrowFault("Fault");
+				Result = "Unexpected";
+			}
+			catch (Exception e)
+			{
+				Result = e;
 			}
 		}
 

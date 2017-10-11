@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace Gui
+namespace Gui.Utils
 {
 	public class RelayCommand : ICommand
 	{
