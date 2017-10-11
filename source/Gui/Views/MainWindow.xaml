@@ -15,12 +15,22 @@
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto">
 		<StackPanel>
-			<TextBox Text ="{Binding Host}"/>
-			<TextBox Text ="{Binding Context}"/>
-			<Button Content="Submit" Command="{Binding SubmitCommand}"/>
-			<Button Content="Query" Command="{Binding QueryCommand}"/>
-			<Button Content="Fault" Command="{Binding FaultCommand}"/>
-			<Button Content="Except" Command="{Binding ExceptCommand}"/>
+			<DockPanel LastChildFill="True" Margin="2">
+				<TextBlock DockPanel.Dock="Left">Url:</TextBlock>
+				<TextBox Text ="{Binding Host}"/>
+			</DockPanel>
+
+			<DockPanel LastChildFill="True" Margin="2">
+				<TextBlock DockPanel.Dock="Left">Submit:</TextBlock>
+				<TextBox Text ="{Binding Context}"/>
+			</DockPanel>
+			
+			<StackPanel Orientation="Horizontal">
+				<Button Content="Submit" Command="{Binding SubmitCommand}" Margin="2"/>
+				<Button Content="Query" Command="{Binding QueryCommand}" Margin="2"/>
+				<Button Content="Fault" Command="{Binding FaultCommand}" Margin="2"/>
+				<Button Content="Except" Command="{Binding ExceptCommand}" Margin="2"/>
+			</StackPanel>
 
 			<ContentControl Content="{Binding Result}">
 				<ContentControl.Resources>

@@ -59,7 +59,7 @@ namespace Gui.ViewModels
 		{
 			try
 			{
-				ClientFactory.Create(Host).ThrowException("Except");
+				ClientFactory.Create(Host).ThrowException("Except:" + Context);
 				Result = "Unexpected";
 			}
 			catch (Exception e)
@@ -72,7 +72,7 @@ namespace Gui.ViewModels
 		{
 			try
 			{
-				ClientFactory.Create(Host).ThrowFault("Fault");
+				ClientFactory.Create(Host).ThrowFault("Fault:" + Context);
 				Result = "Unexpected";
 			}
 			catch (Exception e)
