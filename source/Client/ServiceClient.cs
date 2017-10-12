@@ -104,5 +104,23 @@ namespace Client
 				throw;
 			}
 		}
+
+		public void Dispose()
+		{
+			try
+			{
+				if (State != CommunicationState.Faulted)
+				{
+					Close();
+				}
+			}
+			finally
+			{
+				if (State != CommunicationState.Closed)
+				{
+					Abort();
+				}
+			}
+		}
 	}
 }

@@ -1,6 +1,8 @@
-﻿namespace Client
+﻿using System;
+
+namespace Client
 {
-	public interface IClient
+	public interface IClient : IDisposable
 	{
 		string Foo(string value);
 		string[] Query(int count);

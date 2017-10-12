@@ -5,11 +5,14 @@ using System.Windows.Input;
 using Client;
 using Gui.Models;
 using Gui.Utils;
+using Utils.Logging;
 
 namespace Gui.ViewModels
 {
 	public class MainWindowViewModel : INotifyPropertyChanged
 	{
+		private static ILog log = LogManager.GetLogger(typeof(MainWindowViewModel));
+
 		private object result;
 		public ICommand SubmitCommand => new RelayCommand(Submit);
 		public ICommand QueryCommand => new RelayCommand(Query);
@@ -33,9 +36,13 @@ namespace Gui.ViewModels
 
 		private void Submit()
 		{
+			log.Info("Submit");
 			try
 			{
-				Result = ClientFactory.Create(Host).Foo(Context);
+				using (IClient client = CreateClient())
+				{
+					Result = client.Foo(Context);
+				}
 			}
 			catch (Exception e)
 			{
@@ -45,9 +52,13 @@ namespace Gui.ViewModels
 
 		private void Query()
 		{
+			log.Info("Query");
 			try
 			{
-				Result = new QueryResult(ClientFactory.Create(Host).Query(10));
+				using (IClient client = CreateClient())
+				{
+					Result = new QueryResult(client.Query(10));
+				}
 			}
 			catch (Exception e)
 			{
@@ -57,9 +68,13 @@ namespace Gui.ViewModels
 
 		private void Except()
 		{
+			log.Info("Except");
 			try
 			{
-				ClientFactory.Create(Host).ThrowException("Except:" + Context);
+				using (IClient client = CreateClient())
+				{
+					client.ThrowException("Except:" + Context);
+				}
 				Result = "Unexpected";
 			}
 			catch (Exception e)
@@ -70,9 +85,13 @@ namespace Gui.ViewModels
 
 		private void Fault()
 		{
+			log.Info("Fault");
 			try
 			{
-				ClientFactory.Create(Host).ThrowFault("Fault:" + Context);
+				using (IClient client = CreateClient())
+				{
+					client.ThrowFault("Fault:" + Context);
+				}
 				Result = "Unexpected";
 			}
 			catch (Exception e)
@@ -86,6 +105,11 @@ namespace Gui.ViewModels
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		private IClient CreateClient()
+		{
+			return ClientFactory.Create(Host);
 		}
 	}
 }
