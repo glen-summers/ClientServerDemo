@@ -106,7 +106,11 @@
 	</Target>
 
 	<Target Name='Stop'>
-		<Exec Command='taskkill.exe /im iisexpress.exe /f' IgnoreExitCode='true' ContinueOnError='true'/>
+		<Exec Command='taskkill.exe /im iisexpress.exe /f' IgnoreExitCode='true' IgnoreStandardErrorWarningFormat='true'/>
+	</Target>
+	
+	<Target Name='Stop2'>
+		<MSBuild Projects ="$(MSBuildProjectFullPath)" Properties="ForceStop=true" Targets="Stop" />
 	</Target>
 
 	<Target Name='Start'>
@@ -124,7 +128,7 @@
 
 	<Target Name="Coverage" DependsOnTargets="Compile;OpenCover;CoverageReport"/>
 
-	<Target Name="Full" DependsOnTargets="Compile;UnitTest;Start;IntegrationTest;Stop"/>
+	<Target Name="Full" DependsOnTargets="Stop;Compile;UnitTest;Start;IntegrationTest;Stop2"/>
 
 	<Target Name="CiBuild" DependsOnTargets="Clean;Full"/>
 
