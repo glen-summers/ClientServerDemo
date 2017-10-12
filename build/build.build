@@ -83,6 +83,17 @@
 		<MSBuild Projects="$(Source)\$(Solution)" Properties="@(Properties)" BuildInParallel="$(BuildInParallel)"/>
 	</Target>
 
+	<Target Name="Publish">
+		<ItemGroup>
+			<Properties Remove="@(Properties)"/>
+			<Properties Include="Configuration=$(Configuration)"/>
+			<Properties Include="OutputPath=$(OutputPath)"/>
+			<Properties Include="Platform=Any CPU"/>
+			<Properties Include="SqlPublishProfilePath=$(Source)\Database\Database.publish.xml"/>
+		</ItemGroup>
+		<MSBuild Projects="$(Source)\Database\Database.sqlproj" Targets="Publish" Properties="@(Properties)"/>
+	</Target>
+
 	<Target Name="CopyNunit">
 		<Copy SourceFiles="$(Source)\$(NUnitProject)" DestinationFolder="$(OutputPath)"/>
 	</Target>
@@ -128,7 +139,7 @@
 
 	<Target Name="Coverage" DependsOnTargets="Compile;OpenCover;CoverageReport"/>
 
-	<Target Name="Full" DependsOnTargets="Stop;Compile;UnitTest;Start;IntegrationTest;Stop2"/>
+	<Target Name="Full" DependsOnTargets="Stop;Compile;UnitTest;Publish;Start;IntegrationTest;Stop2"/>
 
 	<Target Name="CiBuild" DependsOnTargets="Clean;Full"/>
 

@@ -25,6 +25,8 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultSchema>Demo</DefaultSchema>
     <TargetDatabase>Database</TargetDatabase>
+    <GenerateCreateScript>True</GenerateCreateScript>
+    <IncludeSchemaNameInFileName>True</IncludeSchemaNameInFileName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -65,5 +67,8 @@
     <Build Include="AddSchema.sql" />
     <Build Include="AddData.sql" />
     <Build Include="Query.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Database.publish.xml" />
   </ItemGroup>
 </Project>
