@@ -6,7 +6,7 @@ using Utils.Logging;
 
 namespace Client
 {
-	internal class ServiceClient : ClientBase<IService>, IClient
+	internal sealed class ServiceClient : ClientBase<IService>, IClient
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(ServiceClient));
 
