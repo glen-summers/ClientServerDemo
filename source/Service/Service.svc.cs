@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Security.Permissions;
 using System.ServiceModel;
 using Server;
 using Service.Utils;
@@ -17,6 +18,7 @@ namespace Service
 		private static readonly IServer server = CreateServer();
 
 		[Method]
+		[PrincipalPermission(SecurityAction.Demand, Role = "TestGroup")]
 		public string Foo(string value)
 		{
 			log.Info("User:{0}", System.Threading.Thread.CurrentPrincipal.Identity.Name);
@@ -24,18 +26,21 @@ namespace Service
 		}
 
 		[Method]
+		[PrincipalPermission(SecurityAction.Demand, Role = "TestGroup")]
 		public string[] Query(int count)
 		{
 			return server.Query(count);
 		}
 
 		[Method]
+		[PrincipalPermission(SecurityAction.Demand, Role = "TestGroup")]
 		public void ThrowFault(string message)
 		{
 			server.ThrowFault(message);
 		}
 
 		[Method]
+		[PrincipalPermission(SecurityAction.Demand, Role = "TestGroup")]
 		public void ThrowException(string message)
 		{
 			server.ThrowException(message);

@@ -46,7 +46,7 @@ namespace Gui.ViewModels
 			}
 			catch (Exception e)
 			{
-				Result = e.ToString();
+				Result = e;
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace Gui.ViewModels
 			}
 			catch (Exception e)
 			{
-				Result = e.ToString();
+				Result = e;
 			}
 		}
 
